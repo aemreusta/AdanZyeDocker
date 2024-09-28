@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  veritabani:
+    # platform: linux/x86_64
+    image: mysql:latest
+    container_name: veritabani
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - 3306:3306
+    volumes:
+      - verilerim:/var/lib/mysql
+    networks:
+      - wpnet
+
+  wordpress:
+    image: wordpress:latest
+    depends_on:
+      - veritabani
+    container_name: wordpress
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: veritabani:3306
+      WORDPRESS_DB_USER: user
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: db
+    volumes:
+      - verilerim:/var/www/html/wp-content
+    networks:
+      - wpnet
+
+volumes:
+  verilerim:
+
+networks:
+  wpnet:
+    driver: bridge
+
+  

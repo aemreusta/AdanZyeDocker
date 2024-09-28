@@ -27,4 +27,4 @@ services:
        DB_NAME: proje
 networks:
   webnet:
-    driver: bridge
+    driver: bridge 
